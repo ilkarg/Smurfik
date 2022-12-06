@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Монтаж</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+<body>
+
+    <nav class="one">
+        <ul>
+          <li><a href="#">Главная</a></li>
+          <li><a href="#">О компании</a></li>
+          <li><a href="#">Услуги</a></li>
+          <li><a href="#">Отзывы</a></li>
+          <li><a href="#">Наши работы</a></li>
+          <li><a href="#">Контакты</a></li>
+          <li><a href="#">Новости</a></li>
+          <li><a href="registration.html">Регистрация</a></li>
+          <li><a href="login.html">Войти</a></li>
+        </ul>
+      </nav>
+
+      <input class="btn" type="button" value="Добавить пост">   <input class="btn" type="button" value="Удалить пост">   
+    
+    <div id="main" style="display: flex;">
+        <!--<div class="card">
+            <img src="img/dinasty.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+            <p><b>Название дома:</b> дом для Жан жановых</p> 
+            <p><b>Адрес:</b> Дом простоквашино</p> 
+            <p><b>Комания:</b> BOTEK</p> 
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/dinasty.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+            <p><b>Название дома:</b> дом для Жан жановых</p> 
+            <p><b>Адрес:</b> Дом простоквашино</p> 
+            <p><b>Комания:</b> BOTEK</p> 
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/dinasty.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+            <p><b>Название дома:</b> дом для Жан жановых</p> 
+            <p><b>Адрес:</b> Дом простоквашино</p> 
+            <p><b>Комания:</b> BOTEK</p> 
+            </div>
+        </div>
+      </div>
+      <div style="display: flex;">
+        <div class="card">
+            <img src="img/dinasty.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+            <p><b>Название дома:</b> дом для Жан жановых</p> 
+            <p><b>Адрес:</b> Дом простоквашино</p> 
+            <p><b>Комания:</b> BOTEK</p> 
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/dinasty.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+            <p><b>Название дома:</b> дом для Жан жановых</p> 
+            <p><b>Адрес:</b> Дом простоквашино</p> 
+            <p><b>Комания:</b> BOTEK</p> 
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/dinasty.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+            <p><b>Название дома:</b> дом для Жан жановых</p> 
+            <p><b>Адрес:</b> Дом простоквашино</p> 
+            <p><b>Комания:</b> BOTEK</p> 
+            </div>
+        </div>-->
+      </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/v1/index.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'function': 'objects-load'
+                })
+            }).then((response) => {
+                return response.json().then(function(data) {
+                    if (data["message"] !== undefined && data["message"] === "Карточки с объектами не найдены") {
+                        console.log(data);
+                        return;
+                    }
+                    console.log(data);
+                    data = JSON.parse(JSON.stringify(data));
+                    if (data["name"].length > 0 && data["address"].length > 0 && data["company"].length > 0 && data["photo"].length > 0) {
+                        for (let i = 0; i < data["name"].length; i++) {
+                            let obj = document.createElement('div');
+                            obj.classList.add("card");
+
+                            let photo = document.createElement('img');
+                            photo.classList.add("object-card__photo");
+                            photo.src = data["photo"][i];
+                            photo.alt = data["name"][i];
+                            photo.style = "width:100%";
+
+                            let container = document.createElement('div');
+                            container.classList.add("container");
+
+                            let name = document.createElement('p');
+                            name.innerHTML = "Название: ".bold() + data["name"][i];
+
+                            let address = document.createElement('p');
+                            address.innerHTML = "Адрес: ".bold() + data["address"][i];
+
+                            let company = document.createElement('p');
+                            company.innerHTML = "Компания: ".bold() + data["company"][i];
+
+                            obj.appendChild(photo);
+                            obj.appendChild(container);
+                            container.appendChild(name);
+                            container.appendChild(address);
+                            container.appendChild(company);
+                            document.getElementById('main').appendChild(obj);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
